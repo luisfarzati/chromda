@@ -1,0 +1,103 @@
+service: chromda
+
+custom:
+  s3Bucket: chromda-files
+  snsTopic: chromda
+
+provider:
+  name: aws
+  region: ${opt:region, 'us-east-1'}
+  versionFunctions: false
+  layers:
+    # Google Chrome for AWS Lambda as a layer
+    # Make sure you use the latest version depending on the region
+    # https://github.com/shelfio/chrome-aws-lambda-layer
+    - arn:aws:lambda:${self:provider.region}:764866452798:layer:chrome-aws-lambda:10
+    # dependencies layer
+    - { Ref: ChromdaLambdaLayer }
+  runtime: nodejs12.x
+  memorySize: 2048
+  timeout: 30
+  tracing:
+    lambda: true
+
+functions:
+  captureScreenshot:
+    handler: src/captureScreenshot.handler
+    description: Captures a screenshot of a webpage.
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:PutObjectAcl
+        # If you plan to support multiple buckets via request parameter,
+        # add all possible buckets here
+        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    environment:
+      S3_REGION: ${self:provider.region}
+      S3_BUCKET: ${self:custom.s3Bucket}
+      # Optional vars
+      CHROMIUM_ARGS: "[]"
+      TIMEOUT: "30000"
+      IGNORE_HTTPS_ERRORS: "false"
+      VIEWPORT_WIDTH: "1920"
+      VIEWPORT_HEIGHT: "1200"
+      DEVICE_SCALE_FACTOR: "1"
+      IS_MOBILE: "false"
+      IS_LANDSCAPE: "false"
+    events:
+      - sns:
+          arn: !Ref chromdaTopic
+          topicName: ${self:custom.snsTopic}
+      # TODO: add SQS event
+      # TODO: add Scheduled event
+      # TODO: add API Gateway event
+
+layers:
+  chromda:
+    package:
+      # This file will be created during `npm run deploy`
+      artifact: layer/export/layer.zip
+
+package:
+  exclude:
+    - layer/**
+    - node_modules/**
+    - package.json
+    - yarn.lock
+
+resources:
+  Resources:
+    # Bucket where the screenshots are stored
+    chromdaBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Delete
+      Properties:
+        BucketName: ${self:custom.s3Bucket}
+        AccessControl: Private
+    # Change this if you don't want public read access
+    chromdaBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+              Principal: "*"
+              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+        Bucket:
+          Ref: chromdaBucket
+    chromdaTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.snsTopic}
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function

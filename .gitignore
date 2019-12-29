@@ -1,0 +1,4 @@
+.serverless
+node_modules
+layer/node_modules
+layer/nodejs
