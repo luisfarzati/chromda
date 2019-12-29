@@ -23,12 +23,12 @@ Provided you already have AWS credentials for Serverless, do:
 
 ```bash
 git clone https://github.com/luisfarzati/chromda
-git submodule init
-git submodule update
+cd chromda
+git submodule update --init
 npm install
 ```
 
-Edit the `serverless.yml` file and write a different bucket name:
+Edit the `serverless.yml` file and change the example bucket name with one of your own:
 
 ```yaml
 # serverless.yml
@@ -42,7 +42,7 @@ Deploy the function into your AWS account:
 npm run deploy
 ```
 
-Open the [AWS Lambda Console](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/chromda-dev-captureScreenshot) and create the following test:
+Open the [AWS Lambda Console](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/chromda-dev-captureScreenshot) and create the following test event:
 
 ```jsonc
 {
@@ -54,7 +54,7 @@ Open the [AWS Lambda Console](https://console.aws.amazon.com/lambda/home?region=
 }
 ```
 
-Click **Test**, wait a few seconds (it might take around 6-8 secs), then you should see a response like:
+Click **Test**, wait a few seconds (it might take around 8-10 secs), then you should see a response like:
 
 ```json
 {
@@ -182,3 +182,9 @@ resources:
     Properties:
       TopicName: ${self:custom.snsTopic}
 ```
+
+## X-Ray
+
+AWS X-Ray support is provided and there are segments for Puppeteer navigation and screenshot:
+
+![AWS X-Ray screenshot](https://i.imgur.com/uYw5PhL.png)
