@@ -1,4 +1,4 @@
-![Chromda](chromda.png)
+<img src="/chromda.png" height="220" />
 
 # Chromda – Serverless screenshots
 
