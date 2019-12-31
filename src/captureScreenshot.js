@@ -11,7 +11,7 @@ const CHROMIUM_ARGS = JSON.parse(process.env.CHROMIUM_ARGS || "[]");
 const TIMEOUT = Number(process.env.TIMEOUT) || 30 * 1000;
 const IGNORE_HTTPS_ERRORS = process.env.IGNORE_HTTPS_ERRORS === "true";
 const VIEWPORT_WIDTH = Number(process.env.VIEWPORT_WIDTH) || 1920;
-const VIEWPORT_HEIGHT = Number(process.env.VIEWPORT_WIDTH) || 1200;
+const VIEWPORT_HEIGHT = Number(process.env.VIEWPORT_HEIGHT) || 1200;
 const DEVICE_SCALE_FACTOR = Number(process.env.DEVICE_SCALE_FACTOR) || 1;
 const IS_MOBILE = process.env.IS_MOBILE === "true";
 const IS_LANDSCAPE = process.env.IS_LANDSCAPE === "true";
