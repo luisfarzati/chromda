@@ -129,7 +129,7 @@ exports.handler = async (event, callback) => {
     return buffer;
   });
 
-  const url = await S3Bucket.upload(buffer, imageType, options.s3key);
+  const response = await S3Bucket.upload(buffer, imageType, options.s3key);
 
-  return { url };
+  return JSON.stringify(response);
 };

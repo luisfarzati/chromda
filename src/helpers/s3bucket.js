@@ -1,6 +1,6 @@
 const AWSXRay = require("aws-xray-sdk-core");
 const S3 = require("aws-sdk/clients/s3");
-const uuid = require("uuid/v4");
+const uuid4 = require("uuid/v4");
 
 const S3_BUCKET = process.env.S3_BUCKET;
 const S3_REGION = process.env.S3_REGION;
@@ -18,7 +18,8 @@ const s3 = AWSXRay.captureAWSClient(new S3({ region: S3_REGION }));
  * @param {string} [bucketKey] Optional key, if not specified a UUID will be used.
  */
 exports.upload = async (buffer, format, bucketKey) => {
-  const key = bucketKey || `${uuid()}.${format}`;
+  const uuid = uuid4();
+  const key = bucketKey || `${uuid}.${format}`;
 
   const { Location } = await s3
     .upload({
@@ -30,5 +31,5 @@ exports.upload = async (buffer, format, bucketKey) => {
     })
     .promise();
 
-  return Location;
+  return { uuid: uuid, url: Location };
 };
