@@ -131,5 +131,5 @@ exports.handler = async (event, callback) => {
 
   const response = await S3Bucket.upload(buffer, imageType, options.s3key);
 
-  return JSON.stringify(response);
+  return response;
 };
