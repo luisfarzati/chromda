@@ -4,6 +4,7 @@ const { URL } = require("url");
 const chromeLambda = require("chrome-aws-lambda");
 const MrPuppetshot = require("mrpuppetshot");
 const normalizeEvent = require("./helpers/normalizeEvent");
+const normalizeResponse = require("./helpers/normalizeResponse");
 const S3Bucket = require("./helpers/s3bucket");
 
 // Defaults
@@ -131,5 +132,5 @@ exports.handler = async (event, callback) => {
 
   const response = await S3Bucket.upload(buffer, imageType, options.s3key);
 
-  return response;
+  return normalizeResponse(event, response);
 };
