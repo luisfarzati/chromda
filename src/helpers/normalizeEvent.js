@@ -18,8 +18,8 @@ const normalizedEvent = event => {
       );
     }
     return JSON.parse(event.Records[0].body);
-  } else if ("httpMethod" in event) {
-    return JSON.parse(event.queryStringParameters.json);
+  } else if ("httpMethod" in event && event.httpMethod === "POST") {
+    return JSON.parse(event.body);
   } else if ("time" in event) {
     return event.detail;
   } else {

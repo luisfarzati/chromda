@@ -61,7 +61,7 @@ functions:
       # API Gateway Events
       # - http:
       #     path: capture
-      #     method: get
+      #     method: post
       # Uncomment the provider api key section above as well as the line
       # below to enable private endpoint support
       #     private: true
