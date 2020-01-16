@@ -20,7 +20,7 @@ provider:
   timeout: 30
   tracing:
     lambda: true
-  # See the API Gateway event below for addiitonal details on api keys
+  # See the API Gateway event below for additional details on api keys
   # apiKeys:
   #   - key1
 
