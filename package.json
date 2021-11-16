@@ -17,7 +17,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
     "@types/aws-lambda": "8.10.39",
-    "aws-sdk": "2.595.0",
+    "aws-sdk": "2.814.0",
     "aws-xray-sdk": "2.5.0",
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
