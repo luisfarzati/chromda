@@ -24,7 +24,7 @@
     "chrome-aws-lambda": "2.0.1",
     "mrpuppetshot": "1.1.0",
     "puppeteer-core": "2.0.0",
-    "serverless": "^1.60.1",
+    "serverless": "^3.25.1",
     "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-webpack": "^5.3.1",
     "uuid": "3.3.3",
